@@ -1,0 +1,11 @@
+fake-useragent
+js2xml
+pandas
+Scrapy
+dateparser
+tweepy
+facebook-sdk
+slack-sdk
+bs4
+firebase_admin
+cloudscraper
