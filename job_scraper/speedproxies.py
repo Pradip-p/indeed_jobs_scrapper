@@ -9,7 +9,7 @@ ua = UserAgent()
 
 def get_proxies(): 
     payload ={
-    "username": "curadigitalspeedproxies",
+    "username": "",
     "country": "Random",
     "hostname": "ip",
     "ssl": "http",
@@ -18,8 +18,8 @@ def get_proxies():
     "quantity": "1000"
 }
 
-    url = 'https://dash.speedproxies.net/api/standard-resi/view-proxylist'
-    headers = {'Authorization':'49qwjTf2RMfTet7'}
+    url = ''
+    headers = {'Authorization':''}
     response = requests.post(url,headers=headers,data=json.dumps(payload))
     return response.json()
 def formatted():
@@ -49,7 +49,7 @@ def get_response(link,all_proxies=all_proxies):
         proxy = next(proxy_pool)
         s = requests.Session()
         s.proxies = proxy
-        username = 'curadigitalspeedproxies'
+        username = ''
         password = proxy['http'].split('@')[0].split(':')[-1]
         auth = HTTPProxyAuth(username, password)
         s.auth = auth
