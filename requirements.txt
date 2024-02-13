@@ -1,6 +1,0 @@
-pymongo
-selenium
-bs4
-dateparser
-js2xml
-requests
