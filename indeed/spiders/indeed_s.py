@@ -6,7 +6,7 @@ from fake_useragent import UserAgent
 
 class ExampleSpider(scrapy.Spider):
     name = "indeed"
-    allowed_domains = ["auindeed.com"]
+    allowed_domains = ["au.indeed.com"]
     ua = UserAgent()
 
     def start_requests(self):

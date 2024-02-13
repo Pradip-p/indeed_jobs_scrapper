@@ -88,5 +88,5 @@ DOWNLOAD_HANDLERS = {
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 PLAYWRIGHT_LUNCH_OPTIONS  ={
     "timeout": 20 * 1000,  # 20 seconds
-    "headless": False
+    "headless": True
 }
