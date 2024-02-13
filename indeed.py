@@ -22,8 +22,8 @@ class IndeedScraper:
         self.base_url = 'https://au.indeed.com/jobs?q=nurse&l=Australia&start={}'
         self.start_urls = [self.base_url.format(i) for i in range(1, 660, 10)]
         self.collection_name = collection_name  # Added collection_name as an instance variable
-        self.client = pymongo.MongoClient('mongodb+srv://ns_job:LYAvX8tcrlqKXJ2J@ns.wvdutiy.mongodb.net/JobScraper?retryWrites=true&w=majority')
-        self.db = self.client['JobScraper']
+        self.client = pymongo.MongoClient('')
+        self.db = self.client['']
         self.collection = self.db[self.collection_name]
         self.driver = None  # Initialize the driver as an instance variable
 
