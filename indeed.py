@@ -22,8 +22,8 @@ class IndeedScraper:
         self.base_url = 'https://au.indeed.com/jobs?q=nurse&l=Australia&start={}'
         self.start_urls = [self.base_url.format(i) for i in range(1, 660, 10)]
         self.collection_name = collection_name  # Added collection_name as an instance variable
-        self.client = pymongo.MongoClient('')
-        self.db = self.client['']
+        self.client = pymongo.MongoClient('mongodb+srv://ns_job:LYAvX8tcrlqKXJ2J@ns.wvdutiy.mongodb.net/JobScraper?retryWrites=true&w=majority')
+        self.db = self.client['JobScraper']
         self.collection = self.db[self.collection_name]
         self.driver = None  # Initialize the driver as an instance variable
 
@@ -47,16 +47,28 @@ class IndeedScraper:
         # Set user-agent and window size
         user_agent = get_user_agent('random')  # Assuming get_user_agent is defined elsewhere
         options.add_argument(f"user-agent={user_agent}")
-        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+        #options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
         options.add_argument("--window-size=1920x1080")
 
         # Disable browser automation detection
         options.add_argument("--disable-blink-features=AutomationControlled")
 
         # Enable loading of images
-        # prefs = {"profile.managed_default_content_settings.images": 2}
-        # options.add_experimental_option("prefs", prefs)
-
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        options.add_experimental_option("prefs", prefs)
+        options.add_argument("--disable-popup-blocking")
+        options.add_argument("--disable-popup-blocking")
+        options.add_argument("--disable-infobars")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--lang=en-US")
+        options.add_argument("--region=US")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-background-networking")
+        options.add_argument("--disable-network")
+        options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--enable-javascript")
         # Update the path to your ChromeDriver executable
         self.driver = webdriver.Chrome(options=options)
 
@@ -88,7 +100,7 @@ class IndeedScraper:
 
                 # Wait for the page to load
                 try:
-                    element = WebDriverWait(self.driver, 10).until(
+                    element = WebDriverWait(self.driver, 1).until(
                         EC.presence_of_element_located((By.ID, 'mosaic-data'))
                     )
                     # Your code to interact with the element once it's present
