@@ -14,6 +14,7 @@ import js2xml
 from selenium.common.exceptions import TimeoutException
 from lib.user_agent import get_user_agent
 from urllib.parse import urlparse, urlunparse
+from fake_useragent import UserAgent
 
 
 class IndeedScraper:
@@ -22,10 +23,12 @@ class IndeedScraper:
         self.base_url = 'https://au.indeed.com/jobs?q=nurse&l=Australia&start={}'
         self.start_urls = [self.base_url.format(i) for i in range(1, 660, 10)]
         self.collection_name = collection_name  # Added collection_name as an instance variable
-        self.client = pymongo.MongoClient('')
-        self.db = self.client['']
+        self.client = pymongo.MongoClient('mongodb+srv://ns_job:LYAvX8tcrlqKXJ2J@ns.wvdutiy.mongodb.net/JobScraper?retryWrites=true&w=majority')
+        self.db = self.client['JobScraper']
         self.collection = self.db[self.collection_name]
         self.driver = None  # Initialize the driver as an instance variable
+        self.ua = UserAgent()
+
 
     def get_actual_job_link(self, url):
         try:
@@ -33,8 +36,6 @@ class IndeedScraper:
             final_redirected_url = self.driver.current_url  # This gets the current URL after any redirects
             parsed_url = urlparse(final_redirected_url)
             modified_url = urlunparse((parsed_url.scheme, parsed_url.netloc, parsed_url.path, '', '', ''))
-
-
         except Exception as e:
             print(f"Error getting actual job link: {e}")
             modified_url = None
@@ -46,7 +47,7 @@ class IndeedScraper:
         options.add_argument('--headless')  # use headless browser mode
         # Set user-agent and window size
         user_agent = get_user_agent('random')  # Assuming get_user_agent is defined elsewhere
-        options.add_argument(f"user-agent={user_agent}")
+        options.add_argument(f"user-agent={self.ua.random}")
         #options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
         options.add_argument("--window-size=1920x1080")
 
@@ -100,7 +101,7 @@ class IndeedScraper:
 
                 # Wait for the page to load
                 try:
-                    element = WebDriverWait(self.driver, 1).until(
+                    WebDriverWait(self.driver, 5).until(
                         EC.presence_of_element_located((By.ID, 'mosaic-data'))
                     )
                     # Your code to interact with the element once it's present
