@@ -1,9 +1,6 @@
-fake-useragent
-js2xml
-pandas
-Scrapy
-dateparser
+pymongo
+selenium
 bs4
-firebase_admin
-cloudscraper
-scrapy-cloudflare-middleware
+dateparser
+js2xml
+requests
