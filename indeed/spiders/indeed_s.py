@@ -2,15 +2,18 @@ import scrapy
 import js2xml
 from time import sleep
 import dateparser
+from fake_useragent import UserAgent
 
 class ExampleSpider(scrapy.Spider):
     name = "indeed"
     allowed_domains = ["auindeed.com"]
+    ua = UserAgent()
+
     def start_requests(self):
         url = 'https://au.indeed.com/jobs?q=nurse&l=Australia'
         
         yield scrapy.Request(url, callback=self.parse,
-                            headers={"User-Agent": "Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"},
+                            headers= {f"User-Agent":self.ua.random},
                             meta={
                                 "playwright": True
                              })
