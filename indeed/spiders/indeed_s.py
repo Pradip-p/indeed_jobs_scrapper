@@ -13,7 +13,9 @@ class ExampleSpider(scrapy.Spider):
         url = 'https://au.indeed.com/jobs?q=nurse&l=Australia'
         
         yield scrapy.Request(url, callback=self.parse,
-                            headers= {f"User-Agent":self.ua.random},
+                            headers= {f"User-Agent":self.ua.random,
+                                      "Accept-Language": "en-US,en;q=0.9",
+                                      },
                             meta={
                                 "playwright": True
                              })
