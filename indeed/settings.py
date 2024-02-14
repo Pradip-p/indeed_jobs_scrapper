@@ -19,6 +19,19 @@ DOWNLOAD_HANDLERS = {
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
 PLAYWRIGHT_LAUNCH_OPTIONS = {
+    "slow_mo": 300,
     "headless": True,
-    "timeout": 20 * 10000,  # 200 seconds
+    "timeout": 30 * 10000,  # 200 seconds
 }
+# settings.py
+
+DEFAULT_REQUEST_HEADERS = {
+    'Accept-Language': 'en-US,en;q=0.9',
+}
+
+
+
+# PLAYWRIGHT_CDP_KWARGS = {
+#     "slow_mo": 1000,
+#     "timeout": 10 * 1000
+# }

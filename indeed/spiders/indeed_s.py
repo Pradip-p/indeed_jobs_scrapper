@@ -3,6 +3,7 @@ import js2xml
 from time import sleep
 import dateparser
 from fake_useragent import UserAgent
+from scrapy_playwright.page import PageMethod
 
 class ExampleSpider(scrapy.Spider):
     name = "indeed"
@@ -16,19 +17,31 @@ class ExampleSpider(scrapy.Spider):
                             headers= {f"User-Agent":self.ua.random,
                                       "Accept-Language": "en-US,en;q=0.9",
                                       },
-                            meta={
-                                "playwright": True
-                             })
-                            
-    def parse(self, response):
+                            meta=dict(
+                            playwright = True,
+                            # playwright_include_page = True, 
+                            # playwright_page_methods =[PageMethod('wait_for_selector', '#mosaic-data', timeout=60000)],
+                            errback=self.errback,
+			            ))
+    async def errback(self, failure):
+        page = failure.request.meta["playwright_page"]
+        
+        await page.close()
+   
+    async def parse(self, response):
+        # page = response.meta["playwright_page"]
+    
+        # await page.close()
+     
         try:
             script = response.css('#mosaic-data::text').get('')
             parsed = js2xml.parse(script)
             results = js2xml.jsonlike.make_dict(
                 parsed.xpath('//property[@name="results"]/array')[0])
             for job in results:
-                get_job = self.parse_job(job)
-                print(get_job)
+                print(job)
+                # get_job = self.parse_job(job)
+                # print(get_job)
                 # yield get_job
                 
         except:
